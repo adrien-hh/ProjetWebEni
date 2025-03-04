@@ -2,7 +2,7 @@
 $(init);
 
 function init() {
-    let password;
+    let password, loggedIn;
     let usernameOK, emailOK, passwordOK, pwdCheckOK;
     let usernameInput, emailInput;
 
@@ -98,8 +98,11 @@ function init() {
         // Tableau d'objets utilisateurs
         let users = JSON.parse(localStorage.getItem("users"));
         console.log(users);
+
         if (canSubmit(users)) {
             addUser(users);
+            alert("Utilisateur créé, vous pouvez vous connecter");
+            redirectLogin();
         }
         else {
             console.log("form PAS OK");
@@ -111,16 +114,18 @@ function init() {
         let usernameExists = false;
         let emailExists = false;
 
-        users.forEach((userObject) => {
-            if (userObject.username == usernameInput) {
-                usernameExists = true;
-                console.log("Username already exists");
-            }
-            if (userObject.email == emailInput) {
-                emailExists = true;
-                console.log("Email already exists");
-            }
-        });
+        if(users) {
+            users.forEach((userObject) => {
+                if (userObject.username == usernameInput) {
+                    usernameExists = true;
+                    console.log("Username already exists");
+                }
+                if (userObject.email == emailInput) {
+                    emailExists = true;
+                    console.log("Email already exists");
+                }
+            });
+        }
         // True si tous les champs sont valides, le nom et le mail sont disponibles
         return (!usernameExists && !emailExists && usernameOK && emailOK && passwordOK && pwdCheckOK)
     }
@@ -132,7 +137,8 @@ function init() {
             users.push({
                 "username": usernameInput,
                 "email": emailInput,
-                "password": password
+                "password": password,
+                // "logged": false
             });
             localStorage.setItem("users", JSON.stringify(users));
         }
@@ -143,7 +149,8 @@ function init() {
                     [{
                         "username": usernameInput,
                         "email": emailInput,
-                        "password": password
+                        "password": password,
+                        // "logged": false
                     }]
                 )                    
             );
@@ -155,38 +162,52 @@ function init() {
      * Connexion
      ***********/
     // Clic sur le bouton Valider du formulaire de connexion
-    $("btn-login").on("click", checkLogin);
+    $("#btn-login").on("click", checkLogin);
 
-    // Vérification des identifiants par rapport aux utilisateurs inscrits dans le localStorage
+    // Vérifie si le login existe ou pas dans le localStorage
+    // Si oui, vérifie si le mot de passe entré correspond
     function checkLogin() {
-        let emailExists = false;
-        let passwordChecks = false;
+        // Tableau d'objets utilisateurs
+        let users = JSON.parse(localStorage.getItem("users"));
+        console.log(users);
 
-        users.forEach((userObject) => {
-            // Login valide
-            if (userObject.email === $("#email-login").value) {
-                emailExists = true;
-                console.log("Email exists");
+        // Objet correspondant au mail entré, ou undefined
+        let userObject = users.find((user) => $("#email-login").val() === user.email);
+        // Login valide
+        if (userObject) {
+            console.log("Email exists : " + userObject.email);
+            console.log("Password : " + userObject.password);
+            // Mot de passe correspondant
+            if($("#password-login").val() === userObject.password) {
+                alert("Utilisateur connecté avec l'email : " + userObject.email);
+                loggedIn = userObject.email;
+                console.log("Utilisateur connecté : " + loggedIn);
+                redirectProfile();
             }
-            // Login invalide
             else {
-                console.log("Email does not exist");
+                alert("Mot de passe erroné");
             }
-        });
-
+        }
+        // Login invalide
+        else {
+            console.log("Email does not exist : " + userObject);
+            alert("Login inconnu");
+        }
     };
 
 
 
-
-
-
-
-
-
-    function redirectJS() {
+    
+    function redirectHome() {
+        document.location.href="index.html";
+    }
+    function redirectGame() {
+        document.location.href="memory.html";
+    }
+    function redirectProfile() {
+        document.location.href="profile.html";
+    }
+    function redirectLogin() {
         document.location.href="login.html";
     }
-
-    
 }
