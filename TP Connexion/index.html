@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <form action="" method="post">
+        <fieldset>
+            <legend>Connexion</legend>
+            <section>
+                <div>
+                    <label for="login">Login :</label>
+                    <p class="login">ENI</p>
+                </div>
+                <div>
+                    <label for="mdp">Mot de passe :</label>
+                    <input type="password" name="mdp" id="mdp" pattern="^^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" placeholder="Mot de passe...">
+                    <button type="button" id="btn-visibilite-password">
+                        <img src="images/eye-close.png" alt="Icône oeil fermé" id="oeil">
+                    </button>
+                </div>
+            </section>        
+            <input type="button" value="Valider" id="valider" disabled>
+        </fieldset>
+    </form>
+    <section class="infos">
+        <h2>Consignes du mot de passe :</h2>
+        <ul>
+            <li id="minuscule">Doit comporter une minuscule</li>
+            <li id="majuscule">Doit comporter une majuscule</li>
+            <li id="chiffre">Doit comporter un chiffre</li>
+            <li id="nbCaracteres">Doit faire au minimum 8 caractères</li>
+        </ul>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>

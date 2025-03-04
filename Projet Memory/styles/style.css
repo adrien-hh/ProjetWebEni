@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+    --body-background: blue;
+    --content-background: rgba(33, 37, 41, 1);
+    --nav-hover: rgba(60, 60, 60, 1);
+    --content-text: rgba(255, 255, 255, 1);
+    --link-text: rgba(30, 140, 200, 1);
+    --link-hover: rgb(70, 180, 250);
+    --btn-background: var(--link-text);
+    --btn-bg-hover: var(--link-hover);
+    --input-bg: var(--content-background);
+    --input-bg-focus: var(--nav-hover);
+    --form-grey: rgba(120, 120, 120, 1);
+}
+
+/**********
+Global
+**********/
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-family: "Open Sans", sans-serif;
+    font-size: 62.5%;
+}
+
+body {
+    width: 80%;
+    margin: 1rem auto 0 auto;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--link-text);
+}
+a:hover {
+    color: var(--link-hover);
+}
+/*********
+Mobile first : <750px
+**********/
+
+/***** Header *****/
+h1 {
+    font-size: 4rem;
+    text-align: center;
+}
+
+#memory-title {
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+/***** Header-end *****/
+
+/***** Nav *****/
+.navbar, .container-fluid {
+    padding: 0;
+}
+.navbar {
+    border-radius: 10px;
+    margin: 2rem auto;
+}
+.navbar-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.nav-link {
+    font-size: 1.8rem;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 10px;
+}
+.nav-link:hover {
+    background-color: var(--nav-hover);
+}
+/***** Nav-end *****/
+
+/***** Main *****/
+main {
+    margin: 3rem auto;
+}
+
+section {
+    border-radius: 10px;
+    background-color: var(--content-background);
+    color: var(--content-text);
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+h2 {
+    font-size: 3rem;
+    text-align: center;
+}
+
+h5 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.button {
+    display: block;
+    width: 20%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1rem;
+    color: var(--content-text);
+    background-color: var(--btn-background);
+    border-radius: 10px;
+}
+.button:hover {
+    color: var(--content-text);
+    background-color: var(--btn-bg-hover);
+}
+/***** Main-end *****/
+
+/***** Footer *****/
+footer {
+    text-align: center;
+    border-radius: 5px;
+    background-color: var(--content-background);
+    color: var(--content-text);
+    font-size: 1.2rem;
+}
+/***** Footer-end *****/
+
+/***** Formulaire *****/
+form {
+    display: flex;
+    flex-direction: column;
+}
+label, input {
+    font-size: 1.8rem;
+}
+label {
+    font-weight: 600;
+}
+input {
+    margin: 0 0 2rem 0;
+    padding: 0.5rem;
+    background-color: var(--input-bg);
+    border: none;
+    border-bottom: 2px solid white;
+    color: var(--content-text);
+}
+input:focus {
+    background-color: var(--input-bg-focus);
+    border: none;
+    border-bottom: 2px solid white;
+    outline: none;
+}
+::placeholder {
+    color: var(--content-text);
+}
+form p {
+    margin-top: -1rem;
+    color: var(--form-grey);
+}
+
+#signin-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1rem;
+}
+/***** Formulaire-end *****/
+
+/***** Password-safety *****/
+.pwd-safety {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+}
+.pwd-safety div {
+    border-top: solid 3px var(--form-grey);
+    width: 33%;
+    margin: 0 0.5rem 1rem 0.5rem;
+}
+div.faible {
+    border-top-color: rgb(170, 0, 0);
+}
+div.moyen {
+    border-top-color: rgb(200, 200, 30);
+}
+div.fort {
+    border-top-color: rgb(0, 120, 0);
+}
+/***** Password-safety-end *****/
+
+
+/* Tablettes : 750-970px */
+
+/* PC standard : 970-1170 */
+
+/* PC large : >1170 */

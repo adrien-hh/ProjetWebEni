@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: white;
+    background-color: rgba(40, 40, 60, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 3%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+fieldset {
+    width: 40vw;
+    height: 35vh;
+    border-radius: 7px;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+legend {
+    font-size: 1.5rem;
+}
+
+section {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+label {
+    display: inline-block;
+    width: 7vw;
+}
+
+input {
+    display: inline-block;
+    width: 25vw;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    padding: 0.75rem;
+}
+
+button {
+    width: 2.5vw;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 5px;
+}
+
+button img {
+    width: 100%;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.infos {
+    padding-top: 3%;
+}
+
+.validate {
+    color: green;
+}
+
+.login {
+    font-weight: bold;
+    display: inline-block;
+    width: 25vw;
+    font-size: 1.3rem;
+}
+
+.infos li {
+    color: red;
+}
+
+input[type="button"] {
+    width: 10vw;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: green;
+}
+
+input[disabled] {
+    background-color: rgb(55, 60, 55);
+    color: black;
+    cursor: not-allowed;
+}
+
+input[type="button"]:hover {
+    cursor: pointer;
+    background-color: rgb(0, 155, 0)
+}
+
+input[disabled]:hover {
+    background-color: rgb(55, 60, 55);
+    color: black;
+    cursor: not-allowed;
+}
