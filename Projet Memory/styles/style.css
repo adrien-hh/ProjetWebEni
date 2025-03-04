@@ -135,7 +135,7 @@ form {
     display: flex;
     flex-direction: column;
 }
-label, input {
+label, input, select {
     font-size: 1.8rem;
 }
 label {
@@ -148,6 +148,10 @@ input {
     border: none;
     border-bottom: 2px solid white;
     color: var(--content-text);
+}
+select {
+    margin: 0.5rem 0 2rem 0;
+    padding: 0.5rem;
 }
 input:focus {
     background-color: var(--input-bg-focus);
@@ -194,6 +198,17 @@ div.fort {
     border-top-color: rgb(0, 120, 0);
 }
 /***** Password-safety-end *****/
+
+
+/***** Profile *****/
+#preview {
+    width: 80%;
+    margin: 0 auto 1rem auto;
+}
+select {
+    width: 60%;
+}
+/***** Profile-end *****/
 
 
 /* Tablettes : 750-970px */

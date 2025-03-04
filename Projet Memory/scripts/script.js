@@ -2,9 +2,9 @@
 $(init);
 
 function init() {
-    let password, loggedIn;
+    let password;
     let usernameOK, emailOK, passwordOK, pwdCheckOK;
-    let usernameInput, emailInput;
+    let usernameInput, emailInput;       
 
     /**** Vérification  à la volée des éléments du formulaire d'inscription ****/
     $("input").on("input", checkInput);
@@ -95,12 +95,8 @@ function init() {
     $("#btn-signin").on("click", signIn);
 
     function signIn() {
-        // Tableau d'objets utilisateurs
-        let users = JSON.parse(localStorage.getItem("users"));
-        console.log(users);
-
-        if (canSubmit(users)) {
-            addUser(users);
+        if (canSubmit()) {
+            addUser();
             alert("Utilisateur créé, vous pouvez vous connecter");
             redirectLogin();
         }
@@ -110,52 +106,41 @@ function init() {
     }
 
     // Vérification de la disponibilité du nom et du mail 
-    function canSubmit(users) {
+    function canSubmit() {
         let usernameExists = false;
         let emailExists = false;
 
-        if(users) {
-            users.forEach((userObject) => {
-                if (userObject.username == usernameInput) {
-                    usernameExists = true;
-                    console.log("Username already exists");
-                }
-                if (userObject.email == emailInput) {
-                    emailExists = true;
-                    console.log("Email already exists");
-                }
-            });
+        for (let i = 0; i < localStorage.length; i++) {
+            const storedEmail = localStorage.key(i);
+            const storedUsername = JSON.parse(localStorage.getItem(storedEmail)).username;
+
+            if (emailInput === storedEmail) {
+                emailExists = true;
+                console.log("Email already exists");
+                break;
+            }
+            if (usernameInput === storedUsername) {
+                usernameExists = true;
+                console.log("Username already exists");
+                break;
+            }
         }
         // True si tous les champs sont valides, le nom et le mail sont disponibles
         return (!usernameExists && !emailExists && usernameOK && emailOK && passwordOK && pwdCheckOK)
     }
 
     // Ajout de l'utilisateur dans le localStorage
-    function addUser(users) {
-        // Si le tableau users existe déjà, ajouter l'utilisateur
-        if (users) {
-            users.push({
-                "username": usernameInput,
-                "email": emailInput,
-                "password": password,
-                // "logged": false
-            });
-            localStorage.setItem("users", JSON.stringify(users));
-        }
-        // Sinon, créer le tableau
-        else {
-            localStorage.setItem("users",
-                JSON.stringify(
-                    [{
-                        "username": usernameInput,
-                        "email": emailInput,
-                        "password": password,
-                        // "logged": false
-                    }]
-                )                    
-            );
-        }
-
+    // key = email ; value = objet user
+    function addUser() {
+        let userObject = {
+            "username": usernameInput,
+            "email" : emailInput,
+            "password": password,
+            "theme": "animals",
+            "size": "2by3",
+            "logged": false
+        };
+        localStorage.setItem(emailInput, JSON.stringify(userObject));
     }
 
     /***********
@@ -167,12 +152,9 @@ function init() {
     // Vérifie si le login existe ou pas dans le localStorage
     // Si oui, vérifie si le mot de passe entré correspond
     function checkLogin() {
-        // Tableau d'objets utilisateurs
-        let users = JSON.parse(localStorage.getItem("users"));
-        console.log(users);
-
-        // Objet correspondant au mail entré, ou undefined
-        let userObject = users.find((user) => $("#email-login").val() === user.email);
+        // Objet user s'il existe, null autrement
+        let userObject = JSON.parse(localStorage.getItem($("#email-login").val()));
+        console.log(userObject);
         // Login valide
         if (userObject) {
             console.log("Email exists : " + userObject.email);
@@ -180,8 +162,10 @@ function init() {
             // Mot de passe correspondant
             if($("#password-login").val() === userObject.password) {
                 alert("Utilisateur connecté avec l'email : " + userObject.email);
-                loggedIn = userObject.email;
-                console.log("Utilisateur connecté : " + loggedIn);
+                userObject.logged = true;
+                localStorage.setItem($("#email-login").val(), JSON.stringify(userObject));
+
+                localStorage.setItem("loggedUser", JSON.stringify(userObject));
                 redirectProfile();
             }
             else {
@@ -194,6 +178,65 @@ function init() {
             alert("Login inconnu");
         }
     };
+
+    /***********
+     * Profile
+     ***********/
+    if (window.location.pathname == "/Projet%20Memory/profile.html") {
+        displayProfile();
+    }
+
+    function displayProfile() {
+        let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+        // console.log(loggedUser);
+
+        $("#email-display").attr("value",
+            loggedUser.email);
+
+        $("#username-display").attr("value",
+            loggedUser.username);
+
+        displayPreview();
+        $("#memory-theme").on("change", displayPreview);
+        // loggedUser.size;
+    }
+
+    function displayPreview() {
+        let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+        loggedUser.theme = $("#memory-theme").val();
+        let url = "";
+
+        switch(loggedUser.theme) {
+            case "scrabble":
+                url = "/ressource/alphabet-scrabble/memory_detail_scrabble.png";
+                break;
+            case "animals":
+                url = "/ressource/animaux/memory_detail_animaux.png";
+                break;
+            case "animals-animated":
+                url="/ressource/animauxAnimes/memory_detail_animaux_animes.png";
+                break;
+            case "pets":
+                url = "/ressource/animauxdomestiques/memory_detail_animaux_domestiques.png";
+                break;
+            case "dogs":
+                url = "/ressource/chiens/memory_details_chiens.png";
+                break;
+            case "dinos":
+                url = "/ressource/dinosaures/memory_detail_dinosaures.png";
+                break;
+            case "dinos-named":
+                url = "/ressource/dinosauresAvecNom/memory_details_dinosaures_avec_nom.png";
+                break;
+            case "vegetables":
+                url = "/ressource/memory-legume/memory_detail.png";
+                break;
+        }
+
+        $("#preview").attr("src", url);
+        localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+    }
+    
 
 
 

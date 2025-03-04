@@ -34,18 +34,40 @@
     </header>
     <main>
         <section>
-            <p>Bienvenue sur mon jeu de Memory ! Tentez de faire le meilleur score possible.</p>
-            <h5>Règle du jeu :</h5>
-            <ul>
-                <li>Cliquez pour retourner deux cartes. Si les images sont identiques, elles restent affichées.</li>
-                <li>Si les images sont différentes, les cartes se retournent.</li>
-                <li>La partie est terminée lorsque toutes les paires ont été trouvées :</li>
-            </ul>
-            <img src="..." alt="Capture d'écran mémory terminé">
-            <p>Pour sauvegarder vos scores, <a href="signin.html" id="link-signin">inscrivez-vous</a> ou <a href="login.html" id="link-login">connectez-vous</a> !</p>
-            <p>Les <strong>cinq meilleurs scores</strong> sont sauvegardés.</p>
-            <p>Pour relancer une partie, appuyez sur <strong>la barre d'espace</strong>.</p>
-            <a href="memory.html" id="btn-play" class="button">Jouer</a>
+            <h2>Profil</h2>
+
+            <form action="" method="POST">
+                <label for="username-display">Nom d'utilisateur</label>
+                <input type="text" name="username-display" id="username-display" disabled>
+
+                <label for="email-display">Email</label>
+                <input type="email" name="email-display" id="email-display" disabled>
+
+                <label for="memory-theme">Choix des images</label>
+                <select name="memory-theme" id="memory-theme">
+                    <option value="" selected>-- Choisissez le thème du jeu --</option>
+                    <option value="scrabble">Scrabble</option>
+                    <option value="animals">Animaux</option>
+                    <option value="animals-animated">Animaux animés</option>
+                    <option value="pets">Animaux domestiques</option>
+                    <option value="dogs">Chiens</option>
+                    <option value="dinos">Dinosaures</option>
+                    <option value="dinos-named">Dinosaures avec noms</option>
+                    <option value="vegetables">Légumes</option>
+                </select>
+
+                <img id="preview" src="">
+
+                <label for="memory-size">Taille du memory</label>
+                <select name="memory-size" id="memory-size">
+                    <option value="" selected>-- Choisissez la taille du jeu --</option>
+                    <option value="3by4">3 x 4</option>
+                    <option value="3by3">3 x 3</option>
+                    <option value="2by3">2 x 3</option>
+                </select>
+
+                <a href="#" id="save-settings" class="button">Enregistrer</a>            
+            </form>
         </section>
     </main>
     <footer>
