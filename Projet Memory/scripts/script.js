@@ -4,7 +4,9 @@ $(init);
 function init() {
     let password;
     let usernameOK, emailOK, passwordOK, pwdCheckOK;
-    let usernameInput, emailInput;       
+    let usernameInput, emailInput;
+    
+    let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
     /**** Vérification  à la volée des éléments du formulaire d'inscription ****/
     $("input").on("input", checkInput);
@@ -136,8 +138,8 @@ function init() {
             "username": usernameInput,
             "email" : emailInput,
             "password": password,
-            "theme": "animals",
-            "size": "2by3",
+            "theme": "",
+            "size": "",
             "logged": false
         };
         localStorage.setItem(emailInput, JSON.stringify(userObject));
@@ -184,10 +186,20 @@ function init() {
      ***********/
     if (window.location.pathname == "/Projet%20Memory/profile.html") {
         displayProfile();
+        $("#save-settings").on("click", saveSettings);
     }
 
+    // Enregistrer les préférences de l'utilisateur 
+    function saveSettings() {
+        loggedUser.size = $("#memory-size").val();
+        localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+
+        //TODO : enregistrer les données de loggedUser vers le user avec l'adresse e-mail
+        
+    }
+
+    // Afficher le profil utilisateur selon les informations stockées
     function displayProfile() {
-        let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
         // console.log(loggedUser);
 
         $("#email-display").attr("value",
@@ -198,13 +210,12 @@ function init() {
 
         displayPreview();
         $("#memory-theme").on("change", displayPreview);
-        // loggedUser.size;
     }
-
+    
+    // Afficher une image des cartes selon la valeur du select et enregistrer dans le localStorage
     function displayPreview() {
-        let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-        loggedUser.theme = $("#memory-theme").val();
         let url = "";
+        loggedUser.theme = $("#memory-theme").val();
 
         switch(loggedUser.theme) {
             case "scrabble":
@@ -231,9 +242,16 @@ function init() {
             case "vegetables":
                 url = "/ressource/memory-legume/memory_detail.png";
                 break;
+            default:
+                url = "/ressource/animaux/memory_detail_animaux.png";
+                break;
         }
 
         $("#preview").attr("src", url);
+
+        // $("#memory-theme option").attr("selected", false);
+        // $(`[value="${loggedUser.theme}"]`).attr("selected", true);
+
         localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
     }
     
