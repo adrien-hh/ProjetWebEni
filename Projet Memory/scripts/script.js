@@ -294,12 +294,14 @@ function init() {
 
         let cardNumber = 0;
         for (let i = 0; i < memorySize[0]; i++) {        
-            $("#memory-board").append("<div></div>");
+            $("#memory-board").append("<div class=row></div>");
             for (let j = 0; j < memorySize[1]; j++) {
-                $("#memory-board div").append(
-                    `<div id=card-${cardNumber}>
-                    <img src="/ressource/memory-legume/1.svg">
-                    </div>`);
+                $(".row:last-child").append(
+                    `<img id=card-${cardNumber} src="/ressource/memory-legume/1.svg">`);
+                // $(".row:last-child").append(
+                //     `<div id=card-${cardNumber}>
+                //     <img src="/ressource/memory-legume/1.svg">
+                //     </div>`);
                 cardNumber++;
             }
         }
