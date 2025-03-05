@@ -228,8 +228,14 @@ select {
 #moves {
     font-size: 1.6rem;
 }
-select {
-    width: 60%;
+#memory-board td {
+    border: none;
+    background-color: blue;
+    border-radius: 5px;
+    margin: 1rem;
+}
+#memory-board td img {
+    width: 50%;
 }
 /***** Memory-end *****/
 

@@ -292,24 +292,17 @@ function init() {
         let url = `/ressource/${themes[memoryTheme]}`;
         console.log(url);
 
-        $("#memory-board").append($("<table></table>"));
-
-        for (let index = 0; index < memorySize; index++) {
-                        
+        let cardNumber = 0;
+        for (let i = 0; i < memorySize[0]; i++) {        
+            $("#memory-board").append("<div></div>");
+            for (let j = 0; j < memorySize[1]; j++) {
+                $("#memory-board div").append(
+                    `<div id=card-${cardNumber}>
+                    <img src="/ressource/memory-legume/1.svg">
+                    </div>`);
+                cardNumber++;
+            }
         }
-
-        $("#addMarin").on("click", function() {
-            let newMarin = $(`<div class=marin>M${nbMarin}</div>`);
-    
-            newMarin.attr("title", "M" + nbMarin);
-            newMarin.css("background-color", "green");
-    
-            $(".equipage").append(newMarin.clone());
-            newMarin.prependTo($(".equipage"));
-    
-            nbMarin++;
-        });
-
 
         console.log("End generateMemory");
     }
