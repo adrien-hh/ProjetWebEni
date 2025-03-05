@@ -191,7 +191,7 @@ function init() {
 
     // Enregistrer les préférences de l'utilisateur 
     function saveSettings() {
-        //TODO : enregistrer les données de loggedUser vers le user avec l'adresse e-mail correspondante
+        // Enregistrer les données de loggedUser vers le user avec l'adresse e-mail correspondante
         localStorage.setItem(loggedUser.email, JSON.stringify(loggedUser));
     }
 
@@ -314,45 +314,95 @@ function init() {
             "extension": ".svg"
         }
     };
-
+    
     let memorySize = ["2", "4"];
     let memoryTheme = "animals";
     let imgCount = parseInt(memorySize[0]) * parseInt(memorySize[1]);
     let maxImg = themes[memoryTheme].size;
     let board = [];
     let url = `/ressource/${themes[memoryTheme].dir}`;
-    let firstClick, secondClick;
+    let firstCard, secondCard;
     let movesCounter = 0;
+    let pairsFound = 0;
 
     generateMemory();
 
     // Clic sur une carte
-    $(".card").on("click", function() {
+    $(".card").on("click", main);
+
+    // Recommencer la partie quand appui sur espace
+    $(window).on("keypress", function(event) {
+        if(event.code === "Space") {
+            event.preventDefault();
+            if(confirm("Recommencer la partie ?")) {
+                resetVariables();
+                generateMemory();
+                $(".card").on("click", main);
+            }
+        }
+    })
+
+    function resetVariables() {
+        memorySize = ["2", "4"];
+        memoryTheme = "animals";
+        imgCount = parseInt(memorySize[0]) * parseInt(memorySize[1]);
+        maxImg = themes[memoryTheme].size;
+        board = [];
+        url = `/ressource/${themes[memoryTheme].dir}`;
+        firstCard, secondCard;
+        movesCounter = 0;
+        pairsFound = 0;
+        $("#moves-counter").text(movesCounter);
+    }
+
+    function main() {
+        showCard(this);
         movesCounter++;
         $(this).off("click");
+
         if(movesCounter % 2 == 0) {
-            secondClick = this.src;
-            console.log("Deuxième clic : " + secondClick);
+            secondCard = this;
+            console.log("Deuxième clic : " + secondCard);
             $("#moves-counter").text(movesCounter/2);
-            // checkPair();
+            checkPair();
         }
         else {
-            firstClick = this.src;
-            console.log("Premier clic : " + firstClick);
+            firstCard = this;
+            console.log("Premier clic : " + firstCard);
         }
-    });
+        if (pairsFound === imgCount/2) {
+            alert("Bravo ! Vous avez gagné en " + movesCounter/2 + " coups");
+        }
+    }
+
+    function showCard(card) {
+        // Affichage de la bonne image
+        card.src = `${url}/${board[$(card).attr("id").split("-")[1]]}${themes[memoryTheme].extension}`;
+    }
+
+    function hideCard(card) {
+        // Retour au point d'interrogation
+        card.src ="/ressource/question.svg";
+
+        // Réécouter l'événement click
+        $(card).on("click", main);
+    }
 
     function checkPair() {
         console.log("Enter checkPair");
 
-        if(firstClick === secondClick) {
+        console.log(firstCard.src === secondCard.src);
 
+        if(firstCard.src === secondCard.src) {
+            console.log("Paire trouvée !");
+            pairsFound++;
         }
-
+        else {
+            setTimeout(hideCard, 1000, firstCard);
+            setTimeout(hideCard, 1000, secondCard);
+        }
         console.log("Leave checkPair");
     }
-
-
 
     // Génération du jeu, en fonction du thème choisi et de la taille
     function generateMemory() {
@@ -375,7 +425,8 @@ function init() {
         // Mélange in-place du tableau board
         shuffleArray(board);
 
-        // Affichage du plateau de jeu selon les valeurs dans board
+        // Affichage du plateau de jeu caché
+        // Paires dans board
         displayBoard();
         
         console.log("End generateMemory");
@@ -385,13 +436,20 @@ function init() {
     // div englobant class = row
     // img class=card id=card-(0 à imgCount-1)
     function displayBoard() {
+        $("#memory-board").children().remove();
         let cardNumber = 0;
         for (let i = 0; i < memorySize[0]; i++) {
             $("#memory-board").append("<div class=row></div>");
             for (let j = 0; j < memorySize[1]; j++) {
+                // $(".row:last-child").append(
+                //     `<img class=card
+                //     id=card-${cardNumber}
+                //     style='display:none'
+                //     src="${url}/${board[cardNumber]}${themes[memoryTheme].extension}">`);
                 $(".row:last-child").append(
-                    `<img class=card id=card-${cardNumber} 
-                    src="${url}/${board[cardNumber]}${themes[memoryTheme].extension}">`);
+                    `<img class=card
+                    id=card-${cardNumber}
+                    src="/ressource/question.svg">`);
                 cardNumber++;
             }
         }
@@ -423,14 +481,6 @@ function init() {
         }
     }
 
-
-
-
-    
-
-
-
-    
     function redirectHome() {
         document.location.href="index.html";
     }
