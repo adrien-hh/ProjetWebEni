@@ -105,6 +105,10 @@ h5 {
     font-size: 2rem;
     font-weight: bold;
 }
+p {
+    text-align: center;
+    font-size: 1.8rem;
+}
 .button {
     display: block;
     width: 20%;
@@ -218,8 +222,18 @@ div.fort {
 select {
     width: 60%;
 }
-
 /***** Profile-end *****/
+
+/***** Memory *****/
+#moves {
+    font-size: 1.6rem;
+}
+select {
+    width: 60%;
+}
+/***** Memory-end *****/
+
+
 
 
 /* Tablettes : 750-970px */

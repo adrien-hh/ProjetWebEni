@@ -34,18 +34,33 @@
     </header>
     <main>
         <section>
-            <p>Bienvenue sur mon jeu de Memory ! Tentez de faire le meilleur score possible.</p>
-            <h5>Règle du jeu :</h5>
-            <ul>
-                <li>Cliquez pour retourner deux cartes. Si les images sont identiques, elles restent affichées.</li>
-                <li>Si les images sont différentes, les cartes se retournent.</li>
-                <li>La partie est terminée lorsque toutes les paires ont été trouvées :</li>
-            </ul>
-            <img src="..." alt="Capture d'écran mémory terminé">
-            <p>Pour sauvegarder vos scores, <a href="signin.html" id="link-signin">inscrivez-vous</a> ou <a href="login.html" id="link-login">connectez-vous</a> !</p>
-            <p>Les <strong>cinq meilleurs scores</strong> sont sauvegardés.</p>
-            <p>Pour relancer une partie, appuyez sur <strong>la barre d'espace</strong>.</p>
-            <a href="memory.html" id="btn-play" class="button">Jouer</a>
+            <p>Trouvez toutes les paires avec le moins d'essais possible.</p>
+            <p>Appuyer sur la <strong>barre d'espace</strong> pour relancer une partie.</p>
+            <p id="moves">Nombre de coups : <span id="moves-counter"></span></p>
+
+            <div id="memory-board">
+                <table>
+                    
+                </table>
+            </div>
+                
+            <h2>Meilleurs scores</h2>
+                <table id="#high-scores">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Taille : </th>
+                        </tr>
+                        <tr>
+                            <th>Pseudo</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Thème</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </form>
         </section>
     </main>
     <footer>

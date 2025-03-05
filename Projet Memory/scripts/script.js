@@ -8,6 +8,16 @@ function init() {
     
     let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
+    let themes = {
+        "scrabble" : "alphabet-scrabble",
+        "animals" : "animaux",
+        "animals-animated" : "animauxAnimes","pets" : "animauxDomestiques",
+        "dogs" : "chiens",
+        "dinos" : "dinosaures",
+        "dinos-named" : "dinosauresAvecNom",
+        "vegetables" : "memory-legume"
+    }
+
     /**** Vérification  à la volée des éléments du formulaire d'inscription ****/
     $("input").on("input", checkInput);
     function checkInput() {
@@ -182,7 +192,7 @@ function init() {
     };
 
     /***********
-     * Profile
+     * Profil
      ***********/
     if (window.location.pathname == "/Projet%20Memory/profile.html") {
         displayProfile();
@@ -262,6 +272,51 @@ function init() {
     /*********
      * Scores
     **********/
+
+    /*********
+     * Memory
+    **********/
+    let memorySize = ["2", "4"];
+    let memoryTheme = "animals";
+    generateMemory();
+
+    // Génération du jeu, en fonction du thème choisi et de la taille
+    function generateMemory() {
+        console.log("Start generateMemory");
+        if(loggedUser) {
+            memorySize = loggedUser.size.split("by");
+            memoryTheme = loggedUser.theme;
+            console.log(memorySize);
+            console.log(memoryTheme);
+        }
+        let url = `/ressource/${themes[memoryTheme]}`;
+        console.log(url);
+
+        $("#memory-board").append($("<table></table>"));
+
+        for (let index = 0; index < memorySize; index++) {
+                        
+        }
+
+        $("#addMarin").on("click", function() {
+            let newMarin = $(`<div class=marin>M${nbMarin}</div>`);
+    
+            newMarin.attr("title", "M" + nbMarin);
+            newMarin.css("background-color", "green");
+    
+            $(".equipage").append(newMarin.clone());
+            newMarin.prependTo($(".equipage"));
+    
+            nbMarin++;
+        });
+
+
+        console.log("End generateMemory");
+    }
+
+
+
+
     
 
 
