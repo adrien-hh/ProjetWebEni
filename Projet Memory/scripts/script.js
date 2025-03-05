@@ -8,16 +8,6 @@ function init() {
     
     let loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
-    let themes = {
-        "scrabble" : "alphabet-scrabble",
-        "animals" : "animaux",
-        "animals-animated" : "animauxAnimes","pets" : "animauxDomestiques",
-        "dogs" : "chiens",
-        "dinos" : "dinosaures",
-        "dinos-named" : "dinosauresAvecNom",
-        "vegetables" : "memory-legume"
-    }
-
     /**** Vérification  à la volée des éléments du formulaire d'inscription ****/
     $("input").on("input", checkInput);
     function checkInput() {
@@ -276,9 +266,93 @@ function init() {
     /*********
      * Memory
     **********/
+    /* Tableau d'objets themes
+    key = valeur dans localStorage
+    key.dir = répertoire contenant les images
+    key.size = nb d'images dans le répertoire
+    key.extension = extension des fichiers pour insertion
+    */
+    let themes = {
+        "scrabble": {
+            "dir": "alphabet-scrabble",
+            "size": 26,
+            "extension": ".png"
+        },
+        "animals": {
+            "dir": "animaux",
+            "size": 28,
+            "extension": ".webp"
+        },
+        "animals-animated": {
+            "dir": "animauxAnimes",
+            "size": 8,
+            "extension": ".webp"
+        },
+        "pets": {
+            "dir": "animauxDomestiques",
+            "size": 10,
+            "extension": ".jpg"
+        },
+        "dogs": {
+            "dir": "chiens",
+            "size": 23,
+            "extension": ".webp"
+        },
+        "dinos": {
+            "dir": "dinosaures",
+            "size": 10,
+            "extension": ".jpg"
+        },
+        "dinos-named": {
+            "dir": "dinosauresAvecNom",
+            "size": 10,
+            "extension": ".jpg"
+        },
+        "vegetables": {
+            "dir": "memory-legume",
+            "size": 6,
+            "extension": ".svg"
+        }
+    };
+
     let memorySize = ["2", "4"];
     let memoryTheme = "animals";
+    let imgCount = parseInt(memorySize[0]) * parseInt(memorySize[1]);
+    let maxImg = themes[memoryTheme].size;
+    let board = [];
+    let url = `/ressource/${themes[memoryTheme].dir}`;
+    let firstClick, secondClick;
+    let movesCounter = 0;
+
     generateMemory();
+
+    // Clic sur une carte
+    $(".card").on("click", function() {
+        movesCounter++;
+        $(this).off("click");
+        if(movesCounter % 2 == 0) {
+            secondClick = this.src;
+            console.log("Deuxième clic : " + secondClick);
+            $("#moves-counter").text(movesCounter/2);
+            // checkPair();
+        }
+        else {
+            firstClick = this.src;
+            console.log("Premier clic : " + firstClick);
+        }
+    });
+
+    function checkPair() {
+        console.log("Enter checkPair");
+
+        if(firstClick === secondClick) {
+
+        }
+
+        console.log("Leave checkPair");
+    }
+
+
 
     // Génération du jeu, en fonction du thème choisi et de la taille
     function generateMemory() {
@@ -286,27 +360,67 @@ function init() {
         if(loggedUser) {
             memorySize = loggedUser.size.split("by");
             memoryTheme = loggedUser.theme;
-            console.log(memorySize);
-            console.log(memoryTheme);
+            imgCount = parseInt(memorySize[0]) * parseInt(memorySize[1]);
+            maxImg = themes[memoryTheme].size;
+            url = `/ressource/${themes[memoryTheme].dir}`;
+            // console.log(memorySize);
+            // console.log(imgCount);
+            // console.log(memoryTheme);
+            // console.log(maxImg);
         }
-        let url = `/ressource/${themes[memoryTheme]}`;
-        console.log(url);
 
+        // Génère un tableau d'entiers avec chacun deux occurrences
+        generateBoard();
+
+        // Mélange in-place du tableau board
+        shuffleArray(board);
+
+        // Affichage du plateau de jeu selon les valeurs dans board
+        displayBoard();
+        
+        console.log("End generateMemory");
+    }
+
+    // Affichage des cartes selon les valeurs trouvées dans board
+    // div englobant class = row
+    // img class=card id=card-(0 à imgCount-1)
+    function displayBoard() {
         let cardNumber = 0;
-        for (let i = 0; i < memorySize[0]; i++) {        
+        for (let i = 0; i < memorySize[0]; i++) {
             $("#memory-board").append("<div class=row></div>");
             for (let j = 0; j < memorySize[1]; j++) {
                 $(".row:last-child").append(
-                    `<img id=card-${cardNumber} src="/ressource/memory-legume/1.svg">`);
-                // $(".row:last-child").append(
-                //     `<div id=card-${cardNumber}>
-                //     <img src="/ressource/memory-legume/1.svg">
-                //     </div>`);
+                    `<img class=card id=card-${cardNumber} 
+                    src="${url}/${board[cardNumber]}${themes[memoryTheme].extension}">`);
                 cardNumber++;
             }
         }
+    }
 
-        console.log("End generateMemory");
+    // Boucle sur la taille du memory/2
+    // push() si l'élément n'est pas déjà présent
+    function generateBoard() {
+        for (let i = 0; i < imgCount/2; i++) {
+            const randNumber = Math.floor(Math.random() * maxImg + 1);
+            if(board.find((el) => el == randNumber)) {
+                i--;
+                continue;
+            }
+            else {
+                board.push(randNumber, randNumber);
+            }
+        }
+        console.log(board);
+    }
+
+    /* Randomize array in-place using Durstenfeld shuffle algorithm */
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i >= 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
     }
 
 
