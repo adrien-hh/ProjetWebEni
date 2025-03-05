@@ -140,7 +140,7 @@ function init() {
             "password": password,
             "theme": "",
             "size": "",
-            "logged": false
+            "lastScores": []
         };
         localStorage.setItem(emailInput, JSON.stringify(userObject));
     }
@@ -191,11 +191,14 @@ function init() {
 
     // Enregistrer les préférences de l'utilisateur 
     function saveSettings() {
-        loggedUser.size = $("#memory-size").val();
-        localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+        //TODO : enregistrer les données de loggedUser vers le user avec l'adresse e-mail correspondante
+        localStorage.setItem(loggedUser.email, JSON.stringify(loggedUser));
+    }
 
-        //TODO : enregistrer les données de loggedUser vers le user avec l'adresse e-mail
-        
+    // Récupérer la taille choisie par l'utilisateur connecté
+    function getSize() {
+        loggedUser.size = this.value;
+        localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
     }
 
     // Afficher le profil utilisateur selon les informations stockées
@@ -210,6 +213,7 @@ function init() {
 
         displayPreview();
         $("#memory-theme").on("change", displayPreview);
+        $("#memory-size").on("change", getSize);
     }
     
     // Afficher une image des cartes selon la valeur du select et enregistrer dans le localStorage
@@ -254,6 +258,10 @@ function init() {
 
         localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
     }
+
+    /*********
+     * Scores
+    **********/
     
 
 
