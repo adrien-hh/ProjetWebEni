@@ -140,7 +140,7 @@ function init() {
             "password": password,
             "theme": "",
             "size": "",
-            "lastScores": []
+            "scores": []
         };
         localStorage.setItem(emailInput, JSON.stringify(userObject));
     }
@@ -314,7 +314,7 @@ function init() {
             "extension": ".svg"
         }
     };
-    
+
     let memorySize = ["2", "4"];
     let memoryTheme = "animals";
     let imgCount = parseInt(memorySize[0]) * parseInt(memorySize[1]);
@@ -356,6 +356,7 @@ function init() {
     }
 
     function main() {
+        // Voir pourquoi l'alerte s'affiche avant la dernière carte
         showCard(this);
         movesCounter++;
         $(this).off("click");
@@ -371,13 +372,35 @@ function init() {
             console.log("Premier clic : " + firstCard);
         }
         if (pairsFound === imgCount/2) {
-            alert("Bravo ! Vous avez gagné en " + movesCounter/2 + " coups");
+            victory();
         }
     }
 
+    function victory() {
+        alert("Bravo ! Vous avez gagné en " + movesCounter/2 + " coups");
+        if (loggedUser) {
+            saveScore();
+        }
+    }
+
+    function saveScore() {
+        let today  = new Date().toLocaleDateString("fr-FR");
+        console.log(today);
+
+        let score = {
+            "username": loggedUser.username,
+            "date": today,
+            "score": movesCounter/2,
+            "size": loggedUser.size,
+            "theme": loggedUser.theme
+        };
+    }
+
     function showCard(card) {
+        console.log("Enter showCard");
         // Affichage de la bonne image
         card.src = `${url}/${board[$(card).attr("id").split("-")[1]]}${themes[memoryTheme].extension}`;
+        console.log("Leave showCard");
     }
 
     function hideCard(card) {
